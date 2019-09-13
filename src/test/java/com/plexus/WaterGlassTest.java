@@ -1,6 +1,7 @@
 package com.plexus;
 
 import com.plexus.exceptions.InvalidInputException;
+import com.plexus.water.WaterGlass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

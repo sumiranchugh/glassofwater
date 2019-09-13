@@ -1,4 +1,4 @@
-package com.plexus;
+package com.plexus.water;
 
 import com.plexus.exceptions.InvalidInputException;
 import lombok.extern.java.Log;

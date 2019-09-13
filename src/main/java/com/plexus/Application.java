@@ -1,6 +1,7 @@
 package com.plexus;
 
 import com.plexus.exceptions.InvalidInputException;
+import com.plexus.water.WaterGlass;
 import lombok.extern.java.Log;
 
 import java.util.Scanner;
