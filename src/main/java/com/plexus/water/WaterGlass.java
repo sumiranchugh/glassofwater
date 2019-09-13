@@ -1,54 +1,71 @@
 package com.plexus.water;
 
 import com.plexus.exceptions.InvalidInputException;
+import com.plexus.util.WaterCalcUtil;
 import lombok.extern.java.Log;
 
 import java.lang.*;
+import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 @Log
 public class WaterGlass {
 
     final float glassCapacity;
+    ArrayList<Glass> glasses;
 
-    public WaterGlass(float capacity){
+    public WaterGlass(float capacity) {
         this.glassCapacity = capacity;
     }
+
     /**
-     *
-     * @param i row
-     * @param j column
+     * @param i        row
+     * @param j        column
      * @param totalCap total capacity of water
      * @return amount of water in ith row and jth glass of that row
      * @throws InvalidInputException
      */
-    public float findWater(int i, int j,
+    public Glass findWater(int i, int j,
                            int totalCap) throws InvalidInputException {
 
         validateInput(i, j, totalCap);
 
-        int ll = Math.round((i * (i + 1)));
-        float[] glass = new float[ll + 2];
-        float capacity = totalCap / glassCapacity;
+        int totalNumberOfGlasses = WaterCalcUtil.calcTotalNumberOfGlasses(i);
+        glasses = new ArrayList<>(totalNumberOfGlasses);
+        initGlasses(totalNumberOfGlasses, totalCap);
+
         int index = 0;
-        glass[index] = capacity;
+        Glass glass;
 
         for (int row = 1; row <= i; ++row) {
             for (int col = 1;
                  col <= row; ++col, ++index) {
-                capacity = glass[index];
+                glass = glasses.get(index);
 
-                glass[index] = (capacity >= 1.0f) ? 1.0f : capacity;
+                float total = glass.getCurrentCapacity();
 
-                capacity = (capacity >= 1.0f) ? (capacity - 1) : 0.0f;
+                glass.setCurrentCapacity(Math.min(total, glassCapacity));
 
-                glass[index + row] += capacity / 2;
-                glass[index + row + 1] += capacity / 2;
+                total = (total >= glassCapacity) ? (total - glassCapacity) : total;
+
+                Glass downOne = glasses.get(index + row);
+                downOne.setCurrentCapacity(downOne.getCurrentCapacity() + (total / 2));
+
+                Glass downTwo = glasses.get(index + row + 1);
+                downTwo.setCurrentCapacity(downTwo.getCurrentCapacity() + (total / 2));
+
             }
         }
 
-        return glassCapacity *glass[i * (i - 1) /
-                2 + j - 1];
+        return glasses.get(i * (i - 1) /
+                2 + j - 1);
     }
+
+    private void initGlasses(int totalNumberOfGlasses, float total) {
+        IntStream.range(0, totalNumberOfGlasses).forEach((index) -> glasses.add(new Glass(glassCapacity)));
+        glasses.get(0).setCurrentCapacity(total);
+    }
+
 
     private void validateInput(int row, int col, int cap) throws InvalidInputException {
         if (row < 1 || col < 1) {
@@ -60,8 +77,8 @@ public class WaterGlass {
         if (cap < 0) {
             throw new InvalidInputException("capacity must be greater than 0");
         }
-        if (row> Math.sqrt(Integer.MAX_VALUE-1)) {
-            throw new InvalidInputException("please enter row less than " + Math.round(Math.sqrt(Integer.MAX_VALUE-1)));
+        if (row > Math.sqrt(Integer.MAX_VALUE - 1)) {
+            throw new InvalidInputException("please enter row less than " + Math.round(Math.sqrt(Integer.MAX_VALUE - 1)));
         }
     }
 

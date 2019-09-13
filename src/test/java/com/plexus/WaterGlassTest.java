@@ -1,6 +1,7 @@
 package com.plexus;
 
 import com.plexus.exceptions.InvalidInputException;
+import com.plexus.water.Glass;
 import com.plexus.water.WaterGlass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -28,8 +29,8 @@ class WaterGlassTest {
     @CsvSource({"1,1,250,250.0", "2,1,275,12.5", "2,2,275,12.5", "2,2,251,0.5"})
     void findWater(int row, int col, int capacity, float result) throws InvalidInputException {
 
-        float water = waterGlass.findWater(row, col, capacity);
-        assertEquals(Float.valueOf(format.format(water)), result);
+        Glass water = waterGlass.findWater(row, col, capacity);
+        assertEquals(Float.valueOf(format.format(water.getCurrentCapacity())), result);
     }
 
     @DisplayName("test valid input, row is 0")

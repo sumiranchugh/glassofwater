@@ -1,6 +1,7 @@
 package com.plexus;
 
 import com.plexus.exceptions.InvalidInputException;
+import com.plexus.water.Glass;
 import com.plexus.water.WaterGlass;
 import lombok.extern.java.Log;
 
@@ -25,19 +26,19 @@ public class Application {
 
         log.log(Level.FINEST, " input received rows {0} columns {1} capacity {2}", new Object[]{i, j, capacity});
 
-        float water = 0f;
+        Glass glass = null;
         WaterGlass waterGlass = new WaterGlass(GLASS_CAPACITY);
 
         try {
-            water = waterGlass.findWater(i, j, capacity);
-            log.log(Level.FINEST, " water capacity calculated {0}", water);
+             glass = waterGlass.findWater(i, j, capacity);
+            log.log(Level.FINEST, " water capacity calculated {0}", glass);
 
         } catch (InvalidInputException e) {
             log.log(Level.SEVERE, "input error {0}", e.getMessage());
             System.out.println("Invalid Input: " + e.getMessage());
         }
 
-        System.out.printf("Amount of water in %d row & %d column is: %.02f ml", i, j, water);
+        System.out.printf("Amount of water in %d row & %d column is: %.02f %s", i, j, glass.getCurrentCapacity(), glass.getUnit().getUnit());
         System.out.println();
     }
 
