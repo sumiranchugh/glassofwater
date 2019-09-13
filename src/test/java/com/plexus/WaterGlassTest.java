@@ -19,7 +19,7 @@ class WaterGlassTest {
 
     @BeforeAll
     public static void setup() {
-        waterGlass = new WaterGlass();
+        waterGlass = new WaterGlass(Application.GLASS_CAPACITY);
     }
 
     @DisplayName("test correct amount of water")

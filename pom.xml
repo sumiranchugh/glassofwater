@@ -45,7 +45,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.plexus.WaterGlass</mainClass>
+                            <mainClass>com.plexus.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
